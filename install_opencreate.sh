@@ -13,7 +13,7 @@ read -rp "Enter the number: " DISTRO
 
 INSTALL_DIR="/usr/local/share/opencreate"
 BIN_DIR="/usr/local/bin"
-REPO_URL="https://github.com/YOUR_GITHUB_USER/YOUR_REPO"
+REPO_URL="https://github.com/luxiumstudios/opencreate.git"
 REPO_DIR="opencreate-tmp-$$"
 
 install_pkgs_arch() {
