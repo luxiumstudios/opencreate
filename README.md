@@ -21,7 +21,7 @@ One download. Five powerful tools. Zero monthly fees.
 | **GIMP**     | Advanced photo manipulation tool    | Adobe Photoshop                  |
 | **Blender**  | Industry-grade 3D creation suite    | Adobe After Effects / Dimension  |
 | **Kdenlive** | Powerful non-linear video editor    | Adobe Premiere Pro               |
-| **Cutshot**  | Rapid video clipper and trimmer     | Adobe Premiere Rush              |
+| **Shotcut**  | Rapid video clipper and trimmer     | Adobe Premiere Rush              |
 
 All seamlessly packaged and ready to go.
 
