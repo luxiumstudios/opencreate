@@ -1,13 +1,18 @@
 import sys
 import subprocess
+import os  # <-- Import os module
 from PyQt5.QtWidgets import (
     QApplication, QWidget, QLabel, QPushButton, QHBoxLayout, QVBoxLayout, QGridLayout, QMessageBox
 )
 from PyQt5.QtGui import QPixmap, QIcon, QPainter, QBrush, QPainterPath
-from PyQt5.QtCore import Qt
+from PyQt5.QtCore import Qt, pyqtSignal
 from functools import partial
 
-# Map app names to their launch commands and icon files
+# Get the directory where the script is located
+# This is crucial for finding icon files
+SCRIPT_DIR = os.path.dirname(__file__)
+
+# Map app names to their launch commands and icon filenames
 APPS = {
     "Inkscape": {"cmd": "inkscape", "icon": "inkscape.png"},
     "GIMP": {"cmd": "gimp", "icon": "gimp.png"},
@@ -33,9 +38,14 @@ class Launcher(QWidget):
     def __init__(self):
         super().__init__()
         self.setWindowTitle("openCreate")
-        self.setFixedSize(240, 240)
-        self.setWindowIcon(QIcon(APPS["Inkscape"]["icon"]))
-        self.setStyleSheet("background-color: #080707;")
+        self.setFixedSize(290, 330)  # Shorter and narrower
+
+        # Construct path to the main window icon
+        window_icon_path = os.path.join(SCRIPT_DIR, "icon.png")
+        if os.path.exists(window_icon_path):
+             self.setWindowIcon(QIcon(window_icon_path))
+
+        self.setStyleSheet("background-color: #080707;")  # Set window background
         self.init_ui()
 
     def init_ui(self):
@@ -50,7 +60,9 @@ class Launcher(QWidget):
 
         # Use ClickableLabel for the featured icon
         featured_icon = ClickableLabel("Inkscape")
-        pixmap = QPixmap(APPS["Inkscape"]["icon"]).scaled(70, 70, Qt.KeepAspectRatio, Qt.SmoothTransformation)
+        # Construct full path for the icon image
+        inkscape_icon_path = os.path.join(SCRIPT_DIR, APPS["Inkscape"]["icon"])
+        pixmap = QPixmap(inkscape_icon_path).scaled(70, 70, Qt.KeepAspectRatio, Qt.SmoothTransformation)
         featured_icon.setPixmap(pixmap)
         featured_icon.setFixedSize(70, 70)
         featured_icon.setStyleSheet("border: 1px solid #222; background: #181818;")
@@ -83,17 +95,19 @@ class Launcher(QWidget):
         other_icons_layout = QHBoxLayout()
         other_icons_layout.setContentsMargins(0, 0, 0, 0)
         other_icons_layout.setSpacing(12)
-        for app in ["GIMP", "Shotcut", "Blender", "Kdenlive"]:
-            icon_label = ClickableLabel(app)
-            pixmap = QPixmap(APPS[app]["icon"]).scaled(38, 38, Qt.IgnoreAspectRatio, Qt.SmoothTransformation)
+        for app_name in ["GIMP", "Shotcut", "Blender", "Kdenlive"]:
+            icon_label = ClickableLabel(app_name)
+            # Construct full path for the icon image
+            app_icon_path = os.path.join(SCRIPT_DIR, APPS[app_name]["icon"])
+            pixmap = QPixmap(app_icon_path).scaled(38, 38, Qt.IgnoreAspectRatio, Qt.SmoothTransformation)
             icon_label.setPixmap(pixmap)
             icon_label.setFixedSize(38, 38)
             icon_label.setStyleSheet("""
                 border: 1px solid #222; background: #181818;
                 margin-right: 0px;
             """)
-            icon_label.setToolTip(f"Launch {app}")
-            icon_label.clicked.connect(partial(self.launch_app, app))
+            icon_label.setToolTip(f"Launch {app_name}")
+            icon_label.clicked.connect(partial(self.launch_app, app_name))
             other_icons_layout.addWidget(icon_label, alignment=Qt.AlignBottom)
 
         # Layout to align the bottom of icons with the RUN button
@@ -120,7 +134,6 @@ class Launcher(QWidget):
             QMessageBox.warning(self, "Not found", f"{app_name} is not installed or not in PATH.")
 
 class ClickableLabel(QLabel):
-    from PyQt5.QtCore import pyqtSignal
     clicked = pyqtSignal()
     def mousePressEvent(self, event):
         if event.button() == Qt.LeftButton:
