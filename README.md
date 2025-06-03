@@ -38,11 +38,9 @@ All seamlessly packaged and ready to go.
 ## 🔧 Installation
 
 ```bash 
-curl -s curl -s https://raw.githubusercontent.com/luxiumstudios/opencreate/main/install_opencreate.sh | bash
-# Or review the script first:
-curl -s https://raw.githubusercontent.com/luxiumstudios/opencreate/main/install_opencreate.sh -o opencreate-installer.sh
-less opencreate-installer.sh
-bash opencreate-installer.sh
+curl -O https://raw.githubusercontent.com/luxiumstudios/opencreate/main/install_opencreate.sh
+chmod +x install_opencreate.sh
+./install_opencreate.sh
 ```
 
 One command. Everything installed. Go create.
