@@ -13,19 +13,20 @@ read -rp "Enter the number: " DISTRO
 
 INSTALL_DIR="/usr/local/share/opencreate"
 BIN_DIR="/usr/local/bin"
-RAW_LAUNCHER_URL="RAW_URL_TO/opencreate_launcher.py"  # <-- Replace with your actual URL
+REPO_URL="https://github.com/YOUR_GITHUB_USER/YOUR_REPO"
+REPO_DIR="opencreate-tmp-$$"
 
 install_pkgs_arch() {
-    sudo pacman -Sy --needed python python-pyqt5 gimp inkscape blender kdenlive shotcut
+    sudo pacman -Sy --needed python python-pyqt5 gimp inkscape blender kdenlive shotcut git
 }
 
 install_pkgs_debian() {
     sudo apt update
-    sudo apt install -y python3 python3-pyqt5 gimp inkscape blender kdenlive shotcut
+    sudo apt install -y python3 python3-pyqt5 gimp inkscape blender kdenlive shotcut git
 }
 
 install_pkgs_fedora() {
-    sudo dnf install -y python3 python3-qt5 gimp inkscape blender kdenlive shotcut
+    sudo dnf install -y python3 python3-qt5 gimp inkscape blender kdenlive shotcut git
 }
 
 install_pkgs_other() {
@@ -62,12 +63,19 @@ case "$DISTRO" in
         echo "Invalid option"; exit 1 ;;
 esac
 
+echo "Downloading the openCreate launcher repository..."
+git clone --depth=1 "$REPO_URL" "$REPO_DIR"
+
+# Or, if you prefer not to require git, use:
+# curl -L "$REPO_URL/archive/refs/heads/main.zip" -o repo.zip
+# unzip repo.zip
+# REPO_DIR=$(find . -maxdepth 1 -type d -name "YOUR_REPO-*")
+
 if [ "$PYQT_INSTALLED" -eq 1 ]; then
     echo "PyQt5 installed via package manager."
-    # Install launcher system-wide
     sudo mkdir -p "$INSTALL_DIR"
-    sudo curl -fsSL "$RAW_LAUNCHER_URL" -o "$INSTALL_DIR/opencreate_launcher.py"
-    # (You may want to automate icon downloads here as well)
+    sudo cp "$REPO_DIR/opencreate_launcher.py" "$INSTALL_DIR/"
+    sudo cp "$REPO_DIR"/*.png "$INSTALL_DIR/"
     sudo tee "$BIN_DIR/opencreate" > /dev/null <<EOF
 #!/usr/bin/env bash
 python3 "$INSTALL_DIR/opencreate_launcher.py"
@@ -82,10 +90,11 @@ else
         python3 -m pipx ensurepath
         export PATH="$HOME/.local/bin:$PATH"
     fi
-    TMPDIR=$(mktemp -d)
-    curl -fsSL "$RAW_LAUNCHER_URL" -o "$TMPDIR/opencreate_launcher.py"
-    pipx install --force "$TMPDIR/opencreate_launcher.py" --python python3 --include-deps
+    pipx install --force "$REPO_DIR/opencreate_launcher.py" --python python3 --include-deps
     echo "Installed opencreate with pipx. Run 'opencreate-launcher' to launch."
 fi
+
+# Clean up
+rm -rf "$REPO_DIR"
 
 echo "Installation complete!" 
