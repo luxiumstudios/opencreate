@@ -61,7 +61,7 @@ openCreate is built on the shoulders of open-source giants:
 - [GIMP](https://www.gimp.org/)
 - [Blender](https://www.blender.org/)
 - [Kdenlive](https://kdenlive.org/)
-- [Cutshot](https://cutshot.app/)
+- [Shotcut](https://shotcut.org/)
 
 ---
 
