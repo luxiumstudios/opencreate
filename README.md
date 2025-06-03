@@ -15,13 +15,13 @@ One download. Five powerful tools. Zero monthly fees.
 
 ## 🎒 What's Inside?
 
-| Tool       | Purpose                           |
-|------------|-----------------------------------|
-| **Inkscape** | Professional vector graphics editor |
-| **GIMP**     | Advanced photo manipulation tool   |
-| **Blender**  | Industry-grade 3D creation suite   |
-| **Kdenlive** | Powerful non-linear video editor   |
-| **Cutshot**  | Rapid video clipper and trimmer    |
+| Tool        | Purpose                            | Replaces                         |
+|-------------|------------------------------------|----------------------------------|
+| **Inkscape** | Professional vector graphics editor | Adobe Illustrator                |
+| **GIMP**     | Advanced photo manipulation tool    | Adobe Photoshop                  |
+| **Blender**  | Industry-grade 3D creation suite    | Adobe After Effects / Dimension  |
+| **Kdenlive** | Powerful non-linear video editor    | Adobe Premiere Pro               |
+| **Cutshot**  | Rapid video clipper and trimmer     | Adobe Premiere Rush              |
 
 All seamlessly packaged and ready to go.
 
