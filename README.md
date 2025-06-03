@@ -37,7 +37,8 @@ All seamlessly packaged and ready to go.
 
 ## 🔧 Installation
 
-```bash curl -s https://www.placeholder.com/get.sh | bash
+```bash 
+curl -s https://www.placeholder.com/get.sh | bash
 # Or review the script first:
 curl -s https://www.placeholder.com/get.sh -o opencreate-installer.sh
 less opencreate-installer.sh
