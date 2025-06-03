@@ -38,7 +38,7 @@ class Launcher(QWidget):
     def __init__(self):
         super().__init__()
         self.setWindowTitle("openCreate")
-        self.setFixedSize(290, 330)  # Shorter and narrower
+        self.setFixedSize(260, 260)  # Even smaller
 
         # Construct path to the main window icon
         window_icon_path = os.path.join(SCRIPT_DIR, "icon.png")
