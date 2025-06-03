@@ -75,7 +75,7 @@ if [ "$PYQT_INSTALLED" -eq 1 ]; then
     echo "PyQt5 installed via package manager."
     sudo mkdir -p "$INSTALL_DIR"
     sudo cp "$REPO_DIR/opencreate_launcher.py" "$INSTALL_DIR/"
-    sudo cp "$REPO_DIR"/*.png "$INSTALL_DIR/"
+    sudo find "$REPO_DIR" -iname '*.png' -exec cp {} "$INSTALL_DIR/" \;
     sudo tee "$BIN_DIR/opencreate" > /dev/null <<EOF
 #!/usr/bin/env bash
 python3 "$INSTALL_DIR/opencreate_launcher.py"
