@@ -1,6 +1,6 @@
 # openCreate 🎨🛠️
 
-**The Ultimate Open-Source Creative Suite**  
+**The Ultimate Free and Open Source Creative Suite**  
 One download. Five powerful tools. Zero monthly fees.
 
 ---
