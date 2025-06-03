@@ -41,7 +41,8 @@ All seamlessly packaged and ready to go.
 # Or review the script first:
 curl -s https://www.placeholder.com/get.sh -o opencreate-installer.sh
 less opencreate-installer.sh
-bash opencreate-installer.sh```
+bash opencreate-installer.sh
+```
 
 One command. Everything installed. Go create.
 
