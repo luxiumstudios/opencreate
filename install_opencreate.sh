@@ -1,0 +1,91 @@
+#!/usr/bin/env bash
+
+set -e
+
+echo "Welcome to the openCreate launcher installer!"
+
+echo "Which Linux distro are you using?"
+echo "1) Arch (including Manjaro, EndeavourOS)"
+echo "2) Debian/Ubuntu (including Mint, Pop!_OS, etc)"
+echo "3) Fedora"
+echo "4) Other"
+read -rp "Enter the number: " DISTRO
+
+INSTALL_DIR="/usr/local/share/opencreate"
+BIN_DIR="/usr/local/bin"
+RAW_LAUNCHER_URL="RAW_URL_TO/opencreate_launcher.py"  # <-- Replace with your actual URL
+
+install_pkgs_arch() {
+    sudo pacman -Sy --needed python python-pyqt5 gimp inkscape blender kdenlive shotcut
+}
+
+install_pkgs_debian() {
+    sudo apt update
+    sudo apt install -y python3 python3-pyqt5 gimp inkscape blender kdenlive shotcut
+}
+
+install_pkgs_fedora() {
+    sudo dnf install -y python3 python3-qt5 gimp inkscape blender kdenlive shotcut
+}
+
+install_pkgs_other() {
+    echo "Please install Python 3, PyQt5, GIMP, Inkscape, Blender, Kdenlive, and Shotcut using your package manager."
+    echo "Press Enter to continue once done."
+    read
+}
+
+PYQT_INSTALLED=0
+
+case "$DISTRO" in
+    1)
+        install_pkgs_arch
+        if pacman -Q python-pyqt5 &>/dev/null; then
+            PYQT_INSTALLED=1
+        fi
+        ;;
+    2)
+        install_pkgs_debian
+        if dpkg -l | grep python3-pyqt5 &>/dev/null; then
+            PYQT_INSTALLED=1
+        fi
+        ;;
+    3)
+        install_pkgs_fedora
+        if rpm -q python3-qt5 &>/dev/null; then
+            PYQT_INSTALLED=1
+        fi
+        ;;
+    4)
+        install_pkgs_other
+        ;;
+    *)
+        echo "Invalid option"; exit 1 ;;
+esac
+
+if [ "$PYQT_INSTALLED" -eq 1 ]; then
+    echo "PyQt5 installed via package manager."
+    # Install launcher system-wide
+    sudo mkdir -p "$INSTALL_DIR"
+    sudo curl -fsSL "$RAW_LAUNCHER_URL" -o "$INSTALL_DIR/opencreate_launcher.py"
+    # (You may want to automate icon downloads here as well)
+    sudo tee "$BIN_DIR/opencreate" > /dev/null <<EOF
+#!/usr/bin/env bash
+python3 "$INSTALL_DIR/opencreate_launcher.py"
+EOF
+    sudo chmod +x "$BIN_DIR/opencreate"
+    echo "Installed opencreate system-wide. Run 'opencreate' to launch."
+else
+    echo "PyQt5 not found in package manager. Installing with pipx..."
+    if ! command -v pipx &>/dev/null; then
+        echo "pipx not found, installing..."
+        python3 -m pip install --user pipx
+        python3 -m pipx ensurepath
+        export PATH="$HOME/.local/bin:$PATH"
+    fi
+    TMPDIR=$(mktemp -d)
+    curl -fsSL "$RAW_LAUNCHER_URL" -o "$TMPDIR/opencreate_launcher.py"
+    pipx install --force "$TMPDIR/opencreate_launcher.py" --python python3 --include-deps
+    echo "Installed opencreate with pipx. Run 'opencreate-launcher' to launch."
+fi
+
+echo "Installation complete!" 
