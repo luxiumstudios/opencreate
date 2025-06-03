@@ -75,12 +75,28 @@ if [ "$PYQT_INSTALLED" -eq 1 ]; then
     echo "PyQt5 installed via package manager."
     sudo mkdir -p "$INSTALL_DIR"
     sudo cp "$REPO_DIR/opencreate_launcher.py" "$INSTALL_DIR/"
-    sudo find "$REPO_DIR" -iname '*.png' -exec cp {} "$INSTALL_DIR/" \;
+    sudo cp "$REPO_DIR"/*.png "$INSTALL_DIR/"
     sudo tee "$BIN_DIR/opencreate" > /dev/null <<EOF
 #!/usr/bin/env bash
 python3 "$INSTALL_DIR/opencreate_launcher.py"
 EOF
     sudo chmod +x "$BIN_DIR/opencreate"
+
+    # Add .desktop file with icon.png as the icon
+    DESKTOP_FILE="/usr/share/applications/opencreate.desktop"
+    ICON_PATH="$INSTALL_DIR/icon.png"
+    sudo tee "$DESKTOP_FILE" > /dev/null <<EOF
+[Desktop Entry]
+Type=Application
+Name=openCreate
+Comment=Launcher for the openCreate suite of FOSS creative applications
+Exec=$BIN_DIR/opencreate
+Icon=$ICON_PATH
+Terminal=false
+Categories=Graphics;AudioVideo;Utility;
+EOF
+    sudo update-desktop-database || true
+
     echo "Installed opencreate system-wide. Run 'opencreate' to launch."
 else
     echo "PyQt5 not found in package manager. Installing with pipx..."
