@@ -31,7 +31,7 @@ All seamlessly packaged and ready to go.
 
 - 🆓 **Truly Free** — No subscriptions, no trials, no strings attached, forever.
 - 🚀 **Lightweight** — No forced logins, cloud bloat, or mysterious background processes.
-- 💻 **Cross-Platform** — Runs great on Windows, Linux, and macOS.
+- 💻 **Cross-Platform (soon)** — Runs great on many Linux distros (and soon Windows and MacOS)
 
 ---
 
